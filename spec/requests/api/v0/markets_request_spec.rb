@@ -3,10 +3,20 @@ require "rails_helper"
 RSpec.describe "Markets API" do
   describe "#GET" do
     it "all Markets" do
-      create_list(:market, 10)
+      factory_markets = create_list(:market, 10)
+      factory_vendors = create_list(:vendor, 50)
+
+      factory_markets.each do |market|
+        num_vendors = rand(0..10)
+        associated_vendors = factory_vendors.pop(num_vendors)
+        associated_vendors.each do |vendor|
+          market.vendors.push(vendor)
+        end
+      end
+      
       get "/api/v0/markets"
       expect(response).to be_successful
-
+      
       markets = JSON.parse(response.body, symbolize_names: true)
       expect(markets[:data].count).to eq(10)
       
@@ -37,6 +47,9 @@ RSpec.describe "Markets API" do
         
         expect(market[:attributes]).to have_key(:lon)
         expect(market[:attributes][:lon]).to be_an(String)
+
+        expect(market[:attributes]).to have_key(:lon)
+        expect(market[:attributes][:vendor_count]).to be_an(Integer)
       end
     end
   end
