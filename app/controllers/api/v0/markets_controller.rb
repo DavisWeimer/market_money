@@ -7,7 +7,7 @@ class Api::V0::MarketsController < ApplicationController
     begin
       render json: { data: MarketSerializer.format_market(Market.find(params[:id])) }
     rescue StandardError => e
-      render json: { errors: [{ detail: e.message }] }, status: 404
+      render json: { errors: [{ detail: e.message }] }, status: :not_found
     end
   end
 end

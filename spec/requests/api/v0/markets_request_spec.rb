@@ -1,5 +1,4 @@
 require "rails_helper"
-require "json"
 
 RSpec.describe "Markets API" do
   describe "#GET" do
