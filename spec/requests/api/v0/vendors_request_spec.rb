@@ -35,5 +35,15 @@ RSpec.describe "Vendors API" do
         expect(market[:attributes][:credit_accepted]).to be_an(TrueClass).or be_an(FalseClass)
       end
     end
+
+    it "Vendors for a market — bad integer id returns 404" do
+      get "/api/v0/markets/123123123123/vendors"
+
+      expect(response).to have_http_status(404)
+
+      error = JSON.parse(response.body, symbolize_names: true)
+      
+      expect(error[:errors][0][:detail]).to eq("Couldn't find Market with 'id'=123123123123")
+    end
   end
 end
