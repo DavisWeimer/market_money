@@ -1,5 +1,4 @@
 require "rails_helper"
-require "json"
 
 RSpec.describe "Markets API" do
   describe "#GET" do
@@ -97,7 +96,7 @@ RSpec.describe "Markets API" do
       expect(market[:data][:attributes][:vendor_count]).to be_an(Integer)
     end
 
-    it "Market by id returns a 404 response when market is not found" do
+    it "Market by id — returns a 404 response when market is not found" do
       get "/api/v0/markets/123123123123"
 
       expect(response).to have_http_status(404)
