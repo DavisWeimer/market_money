@@ -17,7 +17,12 @@ RSpec.describe "Market Vendors API" do
 
       market_vendor = JSON.parse(response.body, symbolize_names: true)
 
+      vendor = Vendor.find(new_vendor[:data][:id])
+      market = Market.find(new_market[:data][:id])
+
       expect(market_vendor[:message]).to eq("Successfully added vendor to market")
+      expect(market.vendors.first).to eq(vendor)
+      expect(vendor.markets.first).to eq(market)
     end
 
     it "creates MarketVendor — CREATE fails if id invalid" do
@@ -26,9 +31,15 @@ RSpec.describe "Market Vendors API" do
       new_vendor = JSON.parse(response.body, symbolize_names: true)
 
       post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][:id], market: "12312312312312" }
-      require 'pry'; binding.pry
+
       expect(response).to have_http_status(:not_found)
-      
+
+      error = JSON.parse(response.body, symbolize_names: true)
+
+      vendor = Vendor.find(new_vendor[:data][:id])
+
+      expect(error[:errors][0][:detail]).to eq("Validation Failed: Vendor or Market must exist")
+      expect(vendor.markets).to eq([])
     end
   end
 end
