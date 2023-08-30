@@ -5,7 +5,7 @@ RSpec.describe "Market API" do
     it "creates Market" do
       market_params = attributes_for(:market)
 
-      post "/api/v0/markets", params: { vendor: market_params }
+      post "/api/v0/markets", params: { market: market_params }
 
       expect(response).to have_http_status(:created)
 
@@ -48,7 +48,7 @@ RSpec.describe "Market API" do
                         state: "Kadath",
                         zip: "43202"
                       }
-      post "/api/v0/markets", params: { vendor: market_params }
+      post "/api/v0/markets", params: { market: market_params }
 
       expect(response).to have_http_status(:bad_request)
 

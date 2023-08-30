@@ -22,6 +22,6 @@ class Api::V0::MarketsController < ApplicationController
 
   private
   def market_params
-    params.require(:vendor).permit(:name, :street, :city, :county, :state, :zip, :lat, :lon)
+    params.require(:market).permit(:name, :street, :city, :county, :state, :zip, :lat, :lon)
   end
 end
