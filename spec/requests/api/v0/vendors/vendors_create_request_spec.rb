@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Market Vendors API" do
+RSpec.describe "Vendors API" do
   describe "#CREATE" do
     it "a Vendor" do
       vendor_params = attributes_for(:vendor, 

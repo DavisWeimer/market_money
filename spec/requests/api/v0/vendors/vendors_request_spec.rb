@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Market Vendors API" do
+RSpec.describe "Vendors API" do
   describe "#GET" do
     it "Vendor by id" do
       id = create(:vendor).id
