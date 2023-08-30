@@ -7,6 +7,19 @@ class Api::V0::VendorsController < ApplicationController
       render json: { errors: [{ detail: vendor.errors.full_messages }] }, status: :bad_request
     end
   end
+
+  def update
+    begin
+      vendor = Vendor.find(params[:id])
+      if vendor.update(vendor_params)
+        render json: { data: VendorSerializer.format_vendor(vendor) }, status: :ok
+      else
+        render json: { errors: [{ detail: vendor.errors.full_messages }] }, status: :bad_request
+      end
+    rescue StandardError => e
+      render json: { errors: [{ detail: e.message }] }, status: :not_found
+    end
+  end
   
   def show
     begin
