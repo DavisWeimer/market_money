@@ -7,4 +7,6 @@ class Api::V0::MarketVendorsController < ApplicationController
       render json: { errors: [{ detail: e.message }] }, status: :not_found
     end
   end
+
+  
 end
