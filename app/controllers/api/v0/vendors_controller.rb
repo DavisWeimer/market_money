@@ -1,11 +1,10 @@
 class Api::V0::VendorsController < ApplicationController
   def create
     vendor = Vendor.new(vendor_params)
-    begin
-      vendor.save
-      render json: { data: VendorSerializer.format_vendor(vendor) }, status: 201
-    rescue StandardError => e 
-      render json: { errors: [{ detail: e.message }] }, status: :not_found
+    if vendor.save
+      render json: { data: VendorSerializer.format_vendor(vendor) }, status: :created
+    else
+      render json: { errors: [{ detail: vendor.errors.full_messages }] }, status: :bad_request
     end
   end
   
