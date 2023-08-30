@@ -55,10 +55,11 @@ RSpec.describe "Market Vendors API" do
 
       post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][:id], market: new_market[:data][:id] }
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:unprocessable_entity)
 
       error = JSON.parse(response.body, symbolize_names: true)
 
+      expect(error[:errors][0][:detail]).to eq("Validation Failed: Market vendor association between market with market_id=#{new_market[:data][:id]} and vendor_id=#{new_vendor[:data][:id]} already exists")
     end
   end
 end

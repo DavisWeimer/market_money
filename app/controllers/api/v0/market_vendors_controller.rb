@@ -14,7 +14,7 @@ class Api::V0::MarketVendorsController < ApplicationController
       vendor = Vendor.find(params[:vendor])
 
       if MarketVendor.exists?(vendor_id: vendor.id, market_id: market.id)
-        render json: { errors: [{ detail: "Validation Failed: Market vendor association between market with market_id=#{market.id} and vendor_id=#{vendor.id} already exists" }] }, status: :bad_request
+        render json: { errors: [{ detail: "Validation Failed: Market vendor association between market with market_id=#{market.id} and vendor_id=#{vendor.id} already exists" }] }, status: :unprocessable_entity
         return
       end
       
@@ -25,6 +25,17 @@ class Api::V0::MarketVendorsController < ApplicationController
       end
     rescue ActiveRecord::RecordNotFound
         render json: { errors: [{ detail: "Validation Failed: Vendor or Market must exist" }] }, status: :not_found
+    end
+  end
+
+  def destroy
+    market_vendor = MarketVendor.find_by(market_id: params[:market_id], vendor_id: params[:vendor_id])
+
+    if market_vendor
+      market_vendor.destroy
+      render json: {}, status: :no_content
+    else
+      render json: { errors: [{ detail: "No MarketVendor with market_id=#{params[:market_id]} AND vendor_id=#{params[:vendor_id]} exists" }] }, status: :not_found
     end
   end
 end
