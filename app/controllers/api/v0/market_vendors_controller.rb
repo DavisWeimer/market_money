@@ -17,8 +17,9 @@ class Api::V0::MarketVendorsController < ApplicationController
       if market_vendor.save
         render json: { message: "Successfully added vendor to market" }, status: :created
       end
-    rescue StandardError => e
+    rescue ActiveRecord::RecordNotFound => e
       render json: { errors: [{ detail: e.message }] }, status: :not_found
+      require 'pry'; binding.pry
     rescue StandardError => e
       render json: { errors: [{ detail: "Vendor or Market not found" }] }, status: :not_found
     end
