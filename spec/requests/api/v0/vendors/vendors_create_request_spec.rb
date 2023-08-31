@@ -16,11 +16,11 @@ RSpec.describe "Vendors API" do
 
       new_vendor = JSON.parse(response.body, symbolize_names: true)
 
-      expect(new_vendor[:data][:attributes][:name]).to eq("Semiconductive Golden Bakery")
-      expect(new_vendor[:data][:attributes][:description]).to eq("SVIs mission is to deliver quality products at affordable prices to our independent retailers, wholesalers and food service partners around the world by providing international procurement, distribution, marketing and supply chain management.")
-      expect(new_vendor[:data][:attributes][:contact_name]).to eq("Youthful Heidi")
-      expect(new_vendor[:data][:attributes][:contact_phone]).to eq("544-061-3183")
-      expect(new_vendor[:data][:attributes][:credit_accepted]).to eq(false)
+      expect(new_vendor[:data][0][:attributes][:name]).to eq("Semiconductive Golden Bakery")
+      expect(new_vendor[:data][0][:attributes][:description]).to eq("SVIs mission is to deliver quality products at affordable prices to our independent retailers, wholesalers and food service partners around the world by providing international procurement, distribution, marketing and supply chain management.")
+      expect(new_vendor[:data][0][:attributes][:contact_name]).to eq("Youthful Heidi")
+      expect(new_vendor[:data][0][:attributes][:contact_phone]).to eq("544-061-3183")
+      expect(new_vendor[:data][0][:attributes][:credit_accepted]).to eq(false)
     end
 
     it "a Vendor — CREATE fails if any datafields are blank " do

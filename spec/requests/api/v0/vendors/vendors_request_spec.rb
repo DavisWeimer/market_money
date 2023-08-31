@@ -12,23 +12,23 @@ RSpec.describe "Vendors API" do
 
       vendor = JSON.parse(response.body, symbolize_names: true)
 
-      expect(vendor[:data]).to have_key(:id)
-      expect(vendor[:data][:id]).to be_an(String)
+      expect(vendor[:data][0]).to have_key(:id)
+      expect(vendor[:data][0][:id]).to be_an(String)
       
-      expect(vendor[:data][:attributes]).to have_key(:name)
-      expect(vendor[:data][:attributes][:name]).to be_an(String)
+      expect(vendor[:data][0][:attributes]).to have_key(:name)
+      expect(vendor[:data][0][:attributes][:name]).to be_an(String)
       
-      expect(vendor[:data][:attributes]).to have_key(:description)
-      expect(vendor[:data][:attributes][:description]).to be_an(String)
+      expect(vendor[:data][0][:attributes]).to have_key(:description)
+      expect(vendor[:data][0][:attributes][:description]).to be_an(String)
       
-      expect(vendor[:data][:attributes]).to have_key(:contact_name)
-      expect(vendor[:data][:attributes][:contact_name]).to be_an(String)
+      expect(vendor[:data][0][:attributes]).to have_key(:contact_name)
+      expect(vendor[:data][0][:attributes][:contact_name]).to be_an(String)
       
-      expect(vendor[:data][:attributes]).to have_key(:contact_phone)
-      expect(vendor[:data][:attributes][:contact_phone]).to be_an(String)
+      expect(vendor[:data][0][:attributes]).to have_key(:contact_phone)
+      expect(vendor[:data][0][:attributes][:contact_phone]).to be_an(String)
       
-      expect(vendor[:data][:attributes]).to have_key(:credit_accepted)
-      expect(vendor[:data][:attributes][:credit_accepted]).to be_an(TrueClass).or be_an(FalseClass)
+      expect(vendor[:data][0][:attributes]).to have_key(:credit_accepted)
+      expect(vendor[:data][0][:attributes][:credit_accepted]).to be_an(TrueClass).or be_an(FalseClass)
     end
 
     it "Vendor by id — bad integer id returns 404" do

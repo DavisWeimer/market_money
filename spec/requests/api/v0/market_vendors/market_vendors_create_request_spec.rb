@@ -11,14 +11,14 @@ RSpec.describe "Market Vendors API" do
       post "/api/v0/markets", params: { market: market_params }
       new_market = JSON.parse(response.body, symbolize_names: true)
 
-      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][:id], market: new_market[:data][:id] }
+      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][0][:id], market: new_market[:data][0][:id] }
       
       expect(response).to have_http_status(:created)
 
       market_vendor = JSON.parse(response.body, symbolize_names: true)
 
-      vendor = Vendor.find(new_vendor[:data][:id])
-      market = Market.find(new_market[:data][:id])
+      vendor = Vendor.find(new_vendor[:data][0][:id])
+      market = Market.find(new_market[:data][0][:id])
 
       expect(market_vendor[:message]).to eq("Successfully added vendor to market")
       expect(market.vendors.first).to eq(vendor)
@@ -30,13 +30,13 @@ RSpec.describe "Market Vendors API" do
       post "/api/v0/vendors", params: { vendor: vendor_params }
       new_vendor = JSON.parse(response.body, symbolize_names: true)
 
-      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][:id], market: "12312312312312" }
+      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][0][:id], market: "12312312312312" }
 
       expect(response).to have_http_status(:not_found)
 
       error = JSON.parse(response.body, symbolize_names: true)
 
-      vendor = Vendor.find(new_vendor[:data][:id])
+      vendor = Vendor.find(new_vendor[:data][0][:id])
 
       expect(error[:errors][0][:detail]).to eq("Validation Failed: Vendor or Market must exist")
       expect(vendor.markets).to eq([])
@@ -51,15 +51,15 @@ RSpec.describe "Market Vendors API" do
       post "/api/v0/markets", params: { market: market_params }
       new_market = JSON.parse(response.body, symbolize_names: true)
       
-      market_vendor = create(:market_vendor, vendor_id: new_vendor[:data][:id], market_id: new_market[:data][:id])
+      market_vendor = create(:market_vendor, vendor_id: new_vendor[:data][0][:id], market_id: new_market[:data][0][:id])
 
-      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][:id], market: new_market[:data][:id] }
+      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][0][:id], market: new_market[:data][0][:id] }
 
       expect(response).to have_http_status(:unprocessable_entity)
 
       error = JSON.parse(response.body, symbolize_names: true)
-
-      expect(error[:errors][0][:detail]).to eq("Validation Failed: Market vendor association between market with market_id=#{new_market[:data][:id]} and vendor_id=#{new_vendor[:data][:id]} already exists")
+      
+      expect(error[:errors][0][:detail]).to eq("Validation Failed: Market vendor association between market with market_id=#{new_market[:data][0][:id]} and vendor_id=#{new_vendor[:data][0][:id]} already exists")
     end
   end
 end

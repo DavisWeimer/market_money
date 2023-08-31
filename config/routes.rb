@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       resources :vendors
       resources :markets, only: [:index, :show, :create] do
         resources :vendors, only: [:index], controller: :market_vendors
+        collection do
+          get :search
+        end
       end
     end
   end

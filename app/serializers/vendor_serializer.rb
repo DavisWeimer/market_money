@@ -16,7 +16,7 @@ class VendorSerializer
   end
 
   def self.format_vendor(vendor)
-    {
+    [{
       id: vendor.id.to_s,
       type: "vendor",
       attributes: {
@@ -26,6 +26,6 @@ class VendorSerializer
         contact_phone: vendor.contact_phone,
         credit_accepted: vendor.credit_accepted
       }
-    }
+    }]
   end
 end

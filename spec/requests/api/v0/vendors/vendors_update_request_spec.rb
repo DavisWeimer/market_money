@@ -13,12 +13,12 @@ RSpec.describe "Vendors API" do
                       contact_name: "Kimberly Couwer",
                       contact_phone: "(184) 976-2283"
                       }
-      patch "/api/v0/vendors/#{@new_vendor[:data][:id]}", params: { vendor: vendor_params }
+      patch "/api/v0/vendors/#{@new_vendor[:data][0][:id]}", params: { vendor: vendor_params }
       expect(response).to have_http_status(:ok)
       
       updated_vendor = JSON.parse(response.body, symbolize_names: true)
-      expect(updated_vendor[:data][:attributes][:contact_name]).to eq("Kimberly Couwer")
-      expect(updated_vendor[:data][:attributes][:contact_phone]).to eq("(184) 976-2283")
+      expect(updated_vendor[:data][0][:attributes][:contact_name]).to eq("Kimberly Couwer")
+      expect(updated_vendor[:data][0][:attributes][:contact_phone]).to eq("(184) 976-2283")
     end
 
     it "updates Vendor — UPDATE fails if id invalid " do
@@ -40,7 +40,7 @@ RSpec.describe "Vendors API" do
         contact_name: "",
         contact_phone: "(184) 976-2283"
         }
-      patch "/api/v0/vendors/#{@new_vendor[:data][:id]}", params: { vendor: vendor_params }
+      patch "/api/v0/vendors/#{@new_vendor[:data][0][:id]}", params: { vendor: vendor_params }
       
       expect(response).to have_http_status(:bad_request)
 

@@ -1,3 +1,5 @@
+require 'pry'
+
 class Api::V0::MarketsController < ApplicationController
   def index
     render json: { data: MarketSerializer.format_markets(Market.all) }
@@ -20,8 +22,75 @@ class Api::V0::MarketsController < ApplicationController
     end
   end
 
+  def search
+    if invalid_parameters?
+      render json: { errors: [{ detail: "Invalid set of parameters. Please provide a valid set of parameters to perform a search with this endpoint." }] }, status: :unprocessable_entity
+    else
+      markets = search_markets(search_hash)
+      if markets.empty?
+        render json: { data: [] }, status: :ok
+      else
+        render json: { data: MarketSerializer.format_markets(markets) }, status: :ok
+      end
+    end
+  end
+
+  
   private
   def market_params
     params.require(:market).permit(:name, :street, :city, :county, :state, :zip, :lat, :lon)
+  end
+  
+  def search_hash
+    hash = Hash.new
+    permitted_params = params.except(:controller, :action)
+
+    permitted_params.each do |key, value|
+      hash[key] = value.titleize if value.present?
+    end
+    hash.symbolize_keys
+  end
+  
+  def invalid_parameters?
+    
+    invalid_combinations = [
+      [:city],
+      [:city, :name]
+    ]
+    
+    valid_combinations = [
+      [:state],
+      [:state, :city],
+      [:state, :city, :name],
+      [:state, :name],
+      [:name]
+    ]
+
+    invalid_combinations.any? { |combination| search_hash.keys.sort == combination.sort } ||
+    valid_combinations.none? { |combination| search_hash.keys.sort == combination.sort }
+  end
+
+  def search_markets(search_hash)
+    query = Market.all
+
+    if search_hash.key?(:name)
+      query = query.where(name: search_hash[:name])
+    end
+    
+    if search_hash.key?(:city)
+      query = query.where(city: search_hash[:city])
+    end
+    
+    if search_hash.key?(:state)
+      query = query.where(state: search_hash[:state])
+    end
+    
+    result = query.first
+
+    if result.nil?
+      []
+    else
+      [result]
+    end
   end
 end

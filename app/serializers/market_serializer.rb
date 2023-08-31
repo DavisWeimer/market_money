@@ -20,7 +20,7 @@ class MarketSerializer
   end
 
   def self.format_market(market)
-    {
+    [{
       id: market.id.to_s,
       type: "market",
       attributes: {
@@ -34,6 +34,6 @@ class MarketSerializer
         lon: market.lon,
         vendor_count: market.vendors.count
       }
-    }
+    }]
   end
 end
