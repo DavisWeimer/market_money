@@ -35,6 +35,19 @@ class Api::V0::MarketsController < ApplicationController
     end
   end
 
+  def nearest_atms
+    begin
+      market = Market.find(params[:id])
+
+      atms = NearestAtmFacade.nearest_atms(market.lat, market.lon).compact
+
+      render json: { data: AtmSerializer.format_atms(atms) }, status: :ok
+
+    rescue StandardError => e
+      render json: { errors: [{ detail: e.message }] }, status: :not_found
+    end
+  end
+
   
   private
   def market_params
