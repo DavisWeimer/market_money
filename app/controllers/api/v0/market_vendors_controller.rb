@@ -10,8 +10,8 @@ class Api::V0::MarketVendorsController < ApplicationController
 
   def create
     begin
-      market = Market.find(params[:market])
-      vendor = Vendor.find(params[:vendor])
+      market = Market.find(params[:market_id])
+      vendor = Vendor.find(params[:vendor_id])
 
       if MarketVendor.exists?(vendor_id: vendor.id, market_id: market.id)
         render json: { errors: [{ detail: "Validation Failed: Market vendor association between market with market_id=#{market.id} and vendor_id=#{vendor.id} already exists" }] }, status: :unprocessable_entity
@@ -29,6 +29,7 @@ class Api::V0::MarketVendorsController < ApplicationController
   end
 
   def destroy
+    # require 'pry'; binding.pry
     market_vendor = MarketVendor.find_by(market_id: params[:market_id], vendor_id: params[:vendor_id])
 
     if market_vendor

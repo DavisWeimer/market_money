@@ -10,7 +10,7 @@ RSpec.describe "Market Vendors API" do
     post "/api/v0/markets", params: { market: market_params }
     @new_market = JSON.parse(response.body, symbolize_names: true)
 
-    post "/api/v0/market_vendors", params: { vendor: @new_vendor[:data][0][:id], market: @new_market[:data][0][:id] }
+    post "/api/v0/market_vendors", params: { vendor_id: @new_vendor[:data][0][:id], market_id: @new_market[:data][0][:id] }
 
     @vendor = Vendor.find(@new_vendor[:data][0][:id])
     @market = Market.find(@new_market[:data][0][:id])
