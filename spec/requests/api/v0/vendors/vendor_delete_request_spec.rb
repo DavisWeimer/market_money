@@ -10,7 +10,7 @@ RSpec.describe "Vendors API" do
   describe "#DELETE" do
     it "deletes Vendor" do
       expect(Vendor.all.count).to eq(1)
-
+      
       delete "/api/v0/vendors/#{@new_vendor[:data][0][:id]}"
       
       expect(response).to have_http_status(:no_content)

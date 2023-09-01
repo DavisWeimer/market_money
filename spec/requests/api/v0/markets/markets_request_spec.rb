@@ -112,7 +112,7 @@ RSpec.describe "Markets API" do
       markets = create_list(:market, 5)
       markets.concat([create(:market, city: "Albuquerque", state: "New Mexico", name: "Nob Hil", )])
 
-      get "/api/v0/markets/search", params: { state: "Denver", city: "colorado", name: "Goodtimes" }
+      get "/api/v0/markets/search", params: { city: "Denver", state: "colorado", name: "Goodtimes" }
 
       expect(response).to have_http_status(:ok)
       market = JSON.parse(response.body, symbolize_names: true)

@@ -15,4 +15,16 @@ RSpec.describe Market, type: :model do
     it { should have_many(:market_vendors) }
     it { should have_many(:vendors).through(:market_vendors) }
   end
+
+  describe "class methods" do
+    it ".build_search_query(search_hash)" do
+      markets = create_list(:market, 5, state: "Colorado")
+      search_hash = {:state=>"Colorado"}
+
+      market_search ||= Market.build_search_query(search_hash)
+      
+      expect(market_search).to be_an(Array)
+      expect(market_search.count).to eq(5)
+    end
+  end
 end

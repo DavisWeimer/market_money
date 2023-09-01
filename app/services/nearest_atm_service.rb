@@ -7,8 +7,7 @@ class NearestAtmService
 
   def self.find_nearest_atms(lat, lon)
     response = conn.get do |req|
-      req.url "search/2/nearbySearch/.json", lat: lat, lon: lon
-      req.params['categorySet'] = 7397
+      req.url "search/2/nearbySearch/.json", lat: lat, lon: lon, categorySet: 7397
     end
     JSON.parse(response.body, symbolize_names: true)
   end

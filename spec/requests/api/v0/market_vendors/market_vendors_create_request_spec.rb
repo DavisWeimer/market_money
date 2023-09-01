@@ -11,7 +11,7 @@ RSpec.describe "Market Vendors API" do
       post "/api/v0/markets", params: { market: market_params }
       new_market = JSON.parse(response.body, symbolize_names: true)
 
-      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][0][:id], market: new_market[:data][0][:id] }
+      post "/api/v0/market_vendors", params: { vendor_id: new_vendor[:data][0][:id], market_id: new_market[:data][0][:id] }
       
       expect(response).to have_http_status(:created)
 
@@ -53,7 +53,7 @@ RSpec.describe "Market Vendors API" do
       
       market_vendor = create(:market_vendor, vendor_id: new_vendor[:data][0][:id], market_id: new_market[:data][0][:id])
 
-      post "/api/v0/market_vendors", params: { vendor: new_vendor[:data][0][:id], market: new_market[:data][0][:id] }
+      post "/api/v0/market_vendors", params: { vendor_id: new_vendor[:data][0][:id], market_id: new_market[:data][0][:id] }
 
       expect(response).to have_http_status(:unprocessable_entity)
 
