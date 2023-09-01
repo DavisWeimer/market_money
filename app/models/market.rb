@@ -11,6 +11,6 @@ class Market < ApplicationRecord
     query = query.where(city: search_hash[:city]) if search_hash.key?(:city)
     query = query.where(state: search_hash[:state]) if search_hash.key?(:state)
     
-    query
+    query.to_a
   end
 end

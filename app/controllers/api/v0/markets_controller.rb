@@ -26,7 +26,7 @@ class Api::V0::MarketsController < ApplicationController
     if invalid_parameters?
       render json: { errors: [{ detail: "Invalid set of parameters. Please provide a valid set of parameters to perform a search with this endpoint." }] }, status: :unprocessable_entity
     else
-      markets = Market.build_search_query(search_hash).to_a
+      markets = Market.build_search_query(search_hash)
       if markets.empty?
         render json: { data: [] }, status: :ok
       else

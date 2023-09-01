@@ -17,12 +17,12 @@ RSpec.describe Market, type: :model do
   end
 
   describe "class methods" do
-    xit ".build_search_query(search_hash)" do
-      require 'pry'; binding.pry
+    it ".build_search_query(search_hash)" do
       markets = create_list(:market, 5, state: "Colorado")
       search_hash = {:state=>"Colorado"}
 
-      market_search = Market.build_search_query(search_hash) 
+      market_search ||= Market.build_search_query(search_hash)
+      
       expect(market_search).to be_an(Array)
       expect(market_search.count).to eq(5)
     end
