@@ -29,7 +29,6 @@ class Api::V0::MarketVendorsController < ApplicationController
   end
 
   def destroy
-    # require 'pry'; binding.pry
     market_vendor = MarketVendor.find_by(market_id: params[:market_id], vendor_id: params[:vendor_id])
 
     if market_vendor
