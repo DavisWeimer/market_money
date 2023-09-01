@@ -10,6 +10,5 @@ class NearestAtmService
       req.url "search/2/nearbySearch/.json", lat: lat, lon: lon, categorySet: 7397
     end
     JSON.parse(response.body, symbolize_names: true)
-    require 'pry'; binding.pry
   end
 end
