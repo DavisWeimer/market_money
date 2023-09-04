@@ -40,5 +40,23 @@ RSpec.describe "Vendors API" do
       
       expect(error[:errors][0][:detail]).to eq("Couldn't find Vendor with 'id'=12313524756238")
     end
+
+    it "#states_sold_in" do
+      id = create(:vendor).id
+      markets = create_list(:market, 3)
+      markets.each do |market|
+        MarketVendor.create!(market_id: market.id, vendor_id: id)
+      end
+
+      get "/api/v0/vendors/#{id}"
+      
+      expect(response).to have_http_status(200)
+      expect(response).to be_successful
+      
+      vendor = JSON.parse(response.body, symbolize_names: true)
+      
+      expect(vendor[:data][0][:attributes]).to have_key(:states_sold_in)
+      expect(vendor[:data][0][:attributes][:states_sold_in]).to be_an(Array)
+    end
   end
 end
