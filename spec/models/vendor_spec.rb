@@ -27,4 +27,35 @@ RSpec.describe Vendor, type: :model do
       expect(vendor.states_finder[0]).to be_an(String)
     end
   end
+
+  describe "class methods" do
+    before :each do
+      @national_vendor = create(:vendor)
+      markets = create_list(:market, 15)
+      markets.each do |market|
+        MarketVendor.create!(market_id: market.id, vendor_id: @national_vendor.id)
+      end
+
+      @national_vendor_2 = create(:vendor)
+      markets = create_list(:market, 4)
+      markets.each do |market|
+        MarketVendor.create!(market_id: market.id, vendor_id: @national_vendor_2.id)
+      end
+
+      @local_vendor = create(:vendor)
+      markets = create_list(:market, 3, state: "Colorado")
+      markets.each do |market|
+        MarketVendor.create!(market_id: market.id, vendor_id: @local_vendor.id)
+      end
+    end
+
+    it ".selling_national" do
+      expect(Vendor.selling_national.to_a).to be_an(Array)
+      expect(Vendor.selling_national.map(&:id)).not_to include(@local_vendor.id)
+    end
+
+    it ".count_of_national" do
+      expect(Vendor.count_of_national).to eq(2)
+    end
+  end
 end

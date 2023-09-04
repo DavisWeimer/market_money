@@ -3,7 +3,11 @@ Rails.application.routes.draw do
     namespace :v0 do
       resources :market_vendors, only: [:create]
       resource :market_vendors, only: [:destroy]
-      resources :vendors
+      resources :vendors do
+        collection do
+          get :multiple_states
+        end
+      end
       resources :markets, only: [:index, :show, :create] do
         resources :vendors, only: [:index], controller: :market_vendors
         collection do
